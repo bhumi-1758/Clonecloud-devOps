@@ -1,0 +1,25 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "clonecloud.fullname" . }}-backend-pdb
+  labels:
+    {{- include "clonecloud.labels" . | nindent 4 }}
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      {{- include "clonecloud.selectorLabels" . | nindent 6 }}
+      app: backend
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "clonecloud.fullname" . }}-frontend-pdb
+  labels:
+    {{- include "clonecloud.labels" . | nindent 4 }}
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      {{- include "clonecloud.selectorLabels" . | nindent 6 }}
+      app: frontend

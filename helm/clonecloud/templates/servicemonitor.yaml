@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "clonecloud.fullname" . }}-backend
+  labels:
+    {{- include "clonecloud.labels" . | nindent 4 }}
+    release: prometheus # Target the prometheus release
+spec:
+  selector:
+    matchLabels:
+      {{- include "clonecloud.selectorLabels" . | nindent 6 }}
+      app: backend
+  endpoints:
+    - port: http
+      path: /metrics # Assuming winston or other middleware adds metrics
+      interval: 30s

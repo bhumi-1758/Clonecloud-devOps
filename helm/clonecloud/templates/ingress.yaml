@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "clonecloud.fullname" . }}
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.className | quote }}
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: {{ .Values.ingress.host | default (printf "%s.%s" .Release.Name .Values.global.domain) | quote }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "clonecloud.fullname" . }}-frontend
+                port:
+                  number: 80
+          - path: /tasks
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "clonecloud.fullname" . }}-backend
+                port:
+                  number: 5000

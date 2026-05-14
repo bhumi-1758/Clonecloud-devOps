@@ -1,0 +1,53 @@
+global:
+  domain: test.example.com
+
+frontend:
+  replicaCount: 2 # Increased for high availability
+  image:
+    repository: clonecloud-frontend
+    tag: latest
+  service:
+    port: 80
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+
+backend:
+  replicaCount: 2 # Increased for high availability
+  image:
+    repository: clonecloud-backend
+    tag: latest
+  service:
+    port: 5000
+  env:
+    MONGO_URI: "mongodb://{{ .Release.Name }}-mongodb:27017/taskflow"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+mongodb:
+  image: mongo:6.0
+  port: 27017
+  persistence:
+    enabled: false
+
+ingress:
+  enabled: true
+  className: "nginx"
+  host: ""
+
+# Module D: Advanced Kubernetes Hardening (Autoscaling)
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
