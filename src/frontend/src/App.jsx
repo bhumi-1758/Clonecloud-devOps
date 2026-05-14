@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import { Layout, PlusCircle } from 'lucide-react';
 
-const API_URL = window.env?.API_URL || 'http://localhost:5000';
+const API_URL = window.env?.API_URL || 'http://127.0.0.1:5000';
 
 function App() {
   const [tasks, setTasks] = useState([]);
