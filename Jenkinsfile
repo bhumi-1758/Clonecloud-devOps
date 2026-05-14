@@ -6,7 +6,7 @@ pipeline {
         APP_NAME = "clonecloud"
         // Module A: Branch Normalization
         // e.g., feature/task-priority -> feature-task-priority
-        BRANCH_SLUG = "${env.BRANCH_NAME.replaceAll(/[^a-zA-Z0-9]/, '-').toLowerCase()}"
+        BRANCH_SLUG = "${(env.BRANCH_NAME ?: 'main').toLowerCase().replaceAll('[^a-z0-9-]','-')}"
         NAMESPACE = "${APP_NAME}-${BRANCH_SLUG}"
         DOMAIN = "test.example.com"
         INGRESS_HOST = "${BRANCH_SLUG}.${DOMAIN}"
